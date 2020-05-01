@@ -1,0 +1,11 @@
+{
+  "name": "javascript-techdegree-project-08",
+  "version": "1.0.0",
+  "description": "SQL Library Manager App",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "JB",
+  "license": "ISC"
+}
