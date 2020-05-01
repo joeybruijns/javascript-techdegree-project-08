@@ -9,6 +9,8 @@ app.set('view engine', 'pug');
 // use the routes from the routes directory
 app.use('/', routeIndex);
 
+// error handling
+
 // app listens on port 3000
 app.listen(3000, () => {
     console.log('The application is running on localhost:3000');
