@@ -1,6 +1,19 @@
-doctype html
-html(lang="en")
-    head
-        title Landing Page
-    body
-        h1 This is the Home Page
+extends layout.pug
+
+block content
+    h1 Books
+    p
+        a(class="button" href="/") Create New Book
+    table
+        thead
+            tr
+                th Title
+                th Author
+                th Genre
+                th Year
+        tbody
+            tr
+                td dummy title
+                td dummy author
+                td dummy genre
+                td dummy year
