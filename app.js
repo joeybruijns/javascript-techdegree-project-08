@@ -12,13 +12,25 @@ app.set('view engine', 'pug');
 // use the routes from the routes directory
 app.use('/', routeIndex);
 
+// TODO: Check if error handler works correctly:
 // handle general errors
-app.use((err, req, res) => {
-    res.locals.error = err;
-    res.status(err.status);
-    console.log(`Error Status: ${err.status}`);
-    res.render('error', {title: "Error"});
-});
+
+// app.use((err, req, res) => {
+//     res.locals.error = err;
+//     res.status(err.status);
+//     console.log(`Error Status: ${err.status}`);
+//     res.render('error', {title: "Error"});
+// });
+
+// app.use( (err, req, res) => {
+//     // set locals, only providing error in development
+//     res.locals.message = err.message;
+//     res.locals.error = req.app.get('env') === 'development' ? err : {};
+//
+//     // render the error page
+//     res.status(err.status || 500);
+//     res.render('error');
+// });
 
 // handle 404 errors
 app.use((req, res) => {

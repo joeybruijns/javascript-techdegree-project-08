@@ -5,13 +5,8 @@ const db = require('../db');
 const {Book} = db.models;
 const {Op} = db.sequelize;
 
-// update book route
-router.get('/update-book', (req, res) => {
-    res.render('update-book', {title: "TITLE"});
-});
-
 // new book route
-router.get('/new-book', (req, res) => {
+router.get('/books/new', (req, res) => {
     res.render('new-book', {title: "New Book"});
 });
 
@@ -26,7 +21,7 @@ router.get('/new-book', (req, res) => {
 
     try {
         const books = await Book.findAll({
-            attributes: ['title', 'author', 'genre', 'year']
+            attributes: ['id', 'title', 'author', 'genre', 'year']
         });
         bookData = books.map(book => book.toJSON());
     } catch (error) {
@@ -39,9 +34,36 @@ router.get('/new-book', (req, res) => {
     }
 
     // home route (redirects to book list)
-    // book list route
     router.get('/', (req, res) => {
+        res.redirect('/books');
+    });
+
+    // book list route
+    router.get('/books', (req, res) => {
         res.render('index', {title: "Books", bookData: bookData})
+    });
+
+    // update book route
+    router.get('/book/:id', (req, res) => {
+        const {id} = req.params;
+
+        let title = "";
+        let author = "";
+        let genre = "";
+        let year = "";
+
+        bookData.forEach(book => {
+            if (book.id.toString() === id) {
+                title = book.title;
+                author = book.author;
+                genre = book.genre;
+                year = book.year.toString();
+            }
+        });
+
+        const currentBookData = {title, author, genre, year};
+
+        res.render('update-book', {title: title, currentBookData});
     });
 
 })();

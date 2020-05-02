@@ -5,17 +5,20 @@ block content
     form
         p
             label(for="title") Title
-            input(name="title" type="text" id="title" value="TITLE DUMMY")
+            input(name="title" type="text" id="title" value=`${currentBookData.title}`)
         p
-            label(for="author")
-            input(name="author" type="text" id="author" value="AUTHOR DUMMY")
+            label(for="author") Author
+            input(name="author" type="text" id="author" value=`${currentBookData.author}`)
         p
-            label(for="genre")
-            input(name="genre" type="text" id="genre" value="GENRE DUMMY")
+            label(for="genre") Genre
+            input(name="genre" type="text" id="genre" value=`${currentBookData.genre}`)
         p
-            label(for="year")
-            input(name="year" type="text" id="year" value="YEAR DUMMY")
+            label(for="year") Year
+            input(name="year" type="text" id="year" value=`${currentBookData.year}`)
         p
             input(type="submit" value="Update Book")
-
-    //form met de delete button hier
+    form
+        p
+            a(class="button" href="/") Cancel
+        p
+            input(type="submit" value="Delete Book")
