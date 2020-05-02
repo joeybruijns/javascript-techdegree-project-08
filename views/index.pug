@@ -3,7 +3,7 @@ extends layout.pug
 block content
     h1 Books
     p
-        a(class="button" href="/") Create New Book
+        a(class="button" href="/new-book") Create New Book
     table
         thead
             tr
@@ -12,8 +12,9 @@ block content
                 th Genre
                 th Year
         tbody
-            tr
-                td dummy title
-                td dummy author
-                td dummy genre
-                td dummy year
+            each book in bookData
+                tr
+                    td= book.title
+                    td= book.author
+                    td= book.genre
+                    td= book.year

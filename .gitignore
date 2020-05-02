@@ -107,3 +107,4 @@ dist
 .idea/modules.xml
 .idea/vcs.xml
 .idea/watcherTasks.xml
+db/models/.DS_Store
