@@ -17,8 +17,8 @@ block content
             input(name="year" type="text" id="year" value=`${bookData.year}`)
         p
             input(type="submit" value="Update Book")
-    form
+
         p
             a(class="button" href="/") Cancel
         p
-            input(type="submit" value="Delete Book")
+            a(class="button" href=`/books/${bookData.id}/delete`) Delete Book

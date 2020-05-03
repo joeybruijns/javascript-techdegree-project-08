@@ -1,0 +1,10 @@
+extends layout.pug
+
+block content
+    h2 Are you sure you want to delete?
+    p The following entry will be deleted:
+    p= bookData.title
+
+    form(action=`/books/${bookData.id}/delete`, method="post")
+        a(href="/") Cancel
+        input(type="submit", value= "Delete Entry")
