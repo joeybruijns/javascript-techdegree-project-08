@@ -21,7 +21,8 @@ router.get('/books/new', (req, res) => {
 
     try {
         const books = await Book.findAll({
-            attributes: ['id', 'title', 'author', 'genre', 'year']
+            attributes: ['id', 'title', 'author', 'genre', 'year'],
+            order: [['title', 'ASC']]
         });
         bookData = books.map(book => book.toJSON());
     } catch (error) {
