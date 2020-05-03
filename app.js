@@ -9,6 +9,10 @@ app.use('/static', express.static('public'));
 // use Pug as the view engine
 app.set('view engine', 'pug');
 
+// get access to the request body
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // use the routes from the routes directory
 app.use('/', routeIndex);
 

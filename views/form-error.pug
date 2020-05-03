@@ -1,8 +1,14 @@
 extends layout.pug
 
 block content
-    h1 Update Book
-    form
+    h1 New Book
+
+    h2(class="error") Oooops!
+    ul(class="error")
+        each error in errors
+            li=`- ${error.message}`
+
+    form(action="/books", method="post")
         p
             label(for="title") Title
             input(name="title" type="text" id="title" value=`${bookData.title}`)
@@ -16,9 +22,6 @@ block content
             label(for="year") Year
             input(name="year" type="text" id="year" value=`${bookData.year}`)
         p
-            input(type="submit" value="Update Book")
-    form
+            input(type="submit" value="Create New Book")
         p
             a(class="button" href="/") Cancel
-        p
-            input(type="submit" value="Delete Book")
