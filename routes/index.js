@@ -7,7 +7,7 @@ const {Op} = db.sequelize;
 
 // handler function to wrap the routes
 function asyncHandler(callback) {
-    return async(req, res, next) => {
+    return async (req, res, next) => {
         try {
             await callback(req, res, next);
         } catch (error) {
@@ -36,7 +36,7 @@ router.get('/books/new', (req, res) => {
 });
 
 // post new book route
-router.post('/', asyncHandler(async (req, res) => {
+router.post('/books/new', asyncHandler(async (req, res) => {
     let bookData;
     try {
         bookData = await Book.create(req.body);
@@ -63,13 +63,25 @@ router.get('/books/:id', asyncHandler(async (req, res) => {
 }));
 
 // update book route
+router.post('/books/:id', asyncHandler(async (req, res) => {
+    const bookToUpdate = await Book.findByPk(req.params.id);
 
-
-
+    if (bookToUpdate) {
+        bookToUpdate.title = req.body.title;
+        bookToUpdate.author = req.body.author;
+        bookToUpdate.genre = req.body.genre;
+        bookToUpdate.year = req.body.year;
+        await bookToUpdate.save();
+        res.redirect('/');
+    } else {
+        res.sendStatus(404);
+    }
+}));
 
 // delete book routes
 router.get('/books/:id/delete', asyncHandler(async (req, res) => {
     const bookToDelete = await Book.findByPk(req.params.id);
+
     if (bookToDelete) {
         res.render('delete-book', {bookData: bookToDelete, title: "Delete Book"});
     } else {
@@ -79,6 +91,7 @@ router.get('/books/:id/delete', asyncHandler(async (req, res) => {
 
 router.post('/books/:id/delete', asyncHandler(async (req, res) => {
     const bookToDelete = await Book.findByPk(req.params.id);
+
     if (bookToDelete) {
         await bookToDelete.destroy();
         res.redirect('/');

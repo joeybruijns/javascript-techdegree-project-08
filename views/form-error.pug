@@ -8,7 +8,7 @@ block content
         each error in errors
             li=`- ${error.message}`
 
-    form(action="/books", method="post")
+    form(action="/books/new", method="post")
         p
             label(for="title") Title
             input(name="title" type="text" id="title" value=`${bookData.title}`)
