@@ -34,7 +34,6 @@ input[type=submit] {
 
 input[type=submit].search-form {
   margin-left: 0;
-  border-radius: 0;
 }
 
 input[type=text].search-form {
