@@ -1,0 +1,21 @@
+extends layout.pug
+
+block content
+    h1 Search Results
+    p
+        a(class="button" href="/") Go Back
+    table
+        thead
+            tr
+                th Title
+                th Author
+                th Genre
+                th Year
+        tbody
+            each book in bookSearchData
+                tr
+                    td
+                        a(href=`/books/${book.id}`)= book.title
+                    td= book.author
+                    td= book.genre
+                    td= book.year

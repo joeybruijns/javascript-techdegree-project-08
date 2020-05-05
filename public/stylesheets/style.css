@@ -32,6 +32,15 @@ input[type=submit] {
   border: 0;
 }
 
+input[type=submit].search-form {
+  margin-left: 0;
+  border-radius: 0;
+}
+
+input[type=text].search-form {
+  margin-left: 0;
+}
+
   a.button:hover, input[type=submit]:hover {
     background-color: #3E7AD4;
   }

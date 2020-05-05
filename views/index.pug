@@ -1,9 +1,15 @@
 extends layout.pug
 
 block content
-    h1 Books
+
+    form(class="search-form" action="/books/" method="get")
+        p
+            input(class="search-form" name="search" type="text" id="search" placeholder="Search for Title, Author, Genre or Year")
+        p
+            input(class="search-form" type="submit" value="Search Books")
+    h1 Library Book Collection
     p
-        a(class="button" href="/books/new") Create New Book
+        a(class="button" href="/books/new") Add New Book
     table
         thead
             tr

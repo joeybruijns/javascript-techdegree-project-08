@@ -3,7 +3,7 @@ const router = express.Router();
 
 const db = require('../db');
 const {Book} = db.models;
-const {Op} = db.sequelize;
+const {Op} = db.Sequelize;
 
 // handler function to wrap the routes
 function asyncHandler(callback) {
@@ -23,12 +23,61 @@ router.get('/', (req, res) => {
 
 // book list route
 router.get('/books', asyncHandler(async (req, res) => {
-    const bookData = await Book.findAll({
-        attributes: ['id', 'title', 'author', 'genre', 'year'],
-        order: [['title', 'ASC']]
-    }).map(book => book.toJSON());
-    res.render('index', {title: "Books", bookData: bookData})
+    const search = req.query.search;
+
+    if (!search) {
+        const bookData = await Book.findAll({
+            attributes: ['id', 'title', 'author', 'genre', 'year'],
+            order: [['title', 'ASC']]
+        }).map(book => book.toJSON());
+        res.render('index', {title: "Books", bookData})
+    } else {
+        const bookSearchData = await Book.findAll({
+            attributes: ['id', 'title', 'author', 'genre', 'year'],
+            order: [['title', 'ASC']],
+            where: {
+                [Op.or]: [
+                    {title: {[Op.like]: `%${search}%`}},
+                    {author: {[Op.like]: `%${search}%`}},
+                    {genre: {[Op.like]: `%${search}%`}},
+                    {year: {[Op.like]: `%${search}%`}}
+                ]
+            }
+        }).map(book => book.toJSON());
+        res.render('search-results', {title: "Search Results", bookSearchData});
+    }
+
+
 }));
+
+// router.get('/books/search', asyncHandler(async (req, res) => {
+//     const search = req.query.search;
+//     let checker = false;
+//
+//     if (search) {
+//         const bookData = await Book.findAll({
+//             attributes: ['id', 'title', 'author', 'genre', 'year'],
+//             order: [['title', 'ASC']],
+//             where: {
+//                 [Op.or]: [
+//                     {title: {[Op.like]: `%${search}%`}},
+//                     {author: {[Op.like]: `%${search}%`}},
+//                     {genre: {[Op.like]: `%${search}%`}},
+//                     {year: {[Op.like]: `%${search}%`}}
+//                 ]
+//             }
+//         });
+//
+//         if (bookData) {
+//             checker = true;
+//         }
+//
+//
+//         res.render('index', {title: "Search Results", bookData});
+//     } else {
+//         res.status(404).render('page-not-found', {title: 'Page Not Found'});
+//     }
+// }));
 
 // get new book route
 router.get('/books/new', (req, res) => {
@@ -51,6 +100,19 @@ router.post('/books/new', asyncHandler(async (req, res) => {
     }
 }));
 
+// get search book route
+// router.get('/books/search', (req, res) => {
+//     res.render('search', {title: "Search Book"});
+// });
+
+// post search book route
+
+
+// get search results route
+// router.get('/books/search', (req, res) => {
+//     res.render('search', {title: "Search Book"});
+// });
+
 // book detail route
 router.get('/books/:id', asyncHandler(async (req, res) => {
     const {id} = req.params;
@@ -58,8 +120,11 @@ router.get('/books/:id', asyncHandler(async (req, res) => {
     const bookData = await Book.findByPk(id, {
         attributes: ['id', 'title', 'author', 'genre', 'year']
     });
-
-    res.render('update-book', {title: bookData.title, bookData});
+    if (bookData) {
+        res.render('update-book', {title: bookData.title, bookData});
+    } else {
+        res.status(404).render('page-not-found', {title: 'Page Not Found'});
+    }
 }));
 
 // update book route
@@ -74,7 +139,7 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
         await bookToUpdate.save();
         res.redirect('/');
     } else {
-        res.sendStatus(404);
+        res.status(404).render('page-not-found', {title: 'Page Not Found'});
     }
 }));
 
@@ -85,7 +150,7 @@ router.get('/books/:id/delete', asyncHandler(async (req, res) => {
     if (bookToDelete) {
         res.render('delete-book', {bookData: bookToDelete, title: "Delete Book"});
     } else {
-        res.sendStatus(404);
+        res.status(404).render('page-not-found', {title: 'Page Not Found'});
     }
 }));
 
@@ -96,7 +161,7 @@ router.post('/books/:id/delete', asyncHandler(async (req, res) => {
         await bookToDelete.destroy();
         res.redirect('/');
     } else {
-        res.sendStatus(404);
+        res.status(404).render('page-not-found', {title: 'Page Not Found'});
     }
 }));
 
