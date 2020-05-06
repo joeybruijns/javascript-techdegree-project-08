@@ -1,7 +1,6 @@
 const express = require('express');
 const routeIndex = require('./routes/index');
-const createError = require('http-errors');
-
+const routeBooks = require('./routes/books');
 const app = express();
 
 // link to the static files
@@ -16,25 +15,12 @@ app.use(express.urlencoded({ extended: false }));
 
 // use the routes from the routes directory
 app.use('/', routeIndex);
-
-// TODO: Check if error handler works correctly:
-// handle sever and general errors
-// app.use((err, req, res, next) => {
-//     // res.locals.error = err;
-//     res.status(err.status);
-//     console.log(`Error Status: ${err.status}`);
-//     res.render('error', {title: "Error"});
-// });
-
-// catch 404 and forward to error handler
-// app.use( (req, res, next) => {
-//     next(createError(404));
-// });
+app.use('/books', routeBooks);
 
 // handle 404 errors
 app.use((req, res) => {
     res.status(404);
-    res.render('page-not-found', {title: 'Page Not Found'});
+    res.render('errors/page-not-found', {title: 'Page Not Found'});
 });
 
 // handle sever and general errors
@@ -46,7 +32,7 @@ app.use( (err, req, res, next) => {
     // render the error page
     res.status(err.status || 500);
     console.log(`Error Status: ${err.status}`);
-    res.render('error', {title: 'Error'});
+    res.render('errors/error', {title: 'Error'});
 });
 
 // app listens on port 3000
