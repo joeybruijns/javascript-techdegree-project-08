@@ -1,17 +1,16 @@
 extends layout.pug
 
 block content
-
-    p
-        a(class="button" href="/books/new") Add New Book
-
     h1 Library Book Collection
 
     form(action="/books/" method="get")
-        p
-            input(class="search-form" name="search" type="text" id="search" placeholder="Search for Title, Author, Genre or Year")
-        p
-            input(class="search-form" type="submit" value="Search Books")
+        div(class="input-group mb-3")
+            input(class="search-form form-control" name="search" type="text" id="search" placeholder="Enter Title, Author, Genre or Year")
+            div(class="search-form input-group-append")
+                button(class="btn btn-primary" type="submit") Search Books
+
+    p
+        a(class="button" href="/books/new") Add New Book
 
     table
         thead

@@ -11,7 +11,7 @@ app.set('view engine', 'pug');
 
 // get access to the request body
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 
 // use the routes from the routes directory
 app.use('/', routeIndex);
@@ -24,7 +24,7 @@ app.use((req, res) => {
 });
 
 // handle sever and general errors
-app.use( (err, req, res, next) => {
+app.use((err, req, res, next) => {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

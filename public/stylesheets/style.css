@@ -44,6 +44,19 @@ input[type=text].search-form {
     background-color: #3E7AD4;
   }
 
+.btn {
+  background-color: #1939A2;
+  border-radius: 2px;
+}
+
+  .btn:hover {
+    background-color: #3E7AD4;
+  }
+
+.input-group {
+  max-width: 430px;
+}
+
 p {
   margin: 20px auto;
 }

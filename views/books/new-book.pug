@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+    h1 New Book
+
+    if formError
+        include ../errors/form-error
+
+    form(action="/books/new", method="post")
+        p
+            label(for="title") Title
+            if formError
+                input(name="title" type="text" id="title" value=`${bookData.title}`)
+            else
+                input(name="title" type="text" id="title")
+        p
+            label(for="author") Author
+            if formError
+                input(name="author" type="text" id="author" value=`${bookData.author}`)
+            else
+                input(name="author" type="text" id="author")
+        p
+            label(for="genre") Genre
+            if formError
+                input(name="genre" type="text" id="genre" value=`${bookData.genre}`)
+            else
+                input(name="genre" type="text" id="genre")
+        p
+            label(for="year") Year
+            if formError
+                input(name="year" type="text" id="year" value=`${bookData.year}`)
+            else
+                input(name="year" type="text" id="year")
+        p
+            input(type="submit" value="Create New Book")
+        p
+            a(class="button" href="/") Cancel
