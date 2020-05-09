@@ -20,15 +20,20 @@ function asyncHandler(callback) {
 router.get('/', asyncHandler(async (req, res) => {
     const search = req.query.search;
 
+    // if no search value is entered render the index page with all the data
     if (!search) {
         const bookData = await Book.findAll({
             attributes: ['id', 'title', 'author', 'genre', 'year'],
             order: [['title', 'ASC']]
         }).map(book => book.toJSON());
-        res.render('index', {title: "Books", bookData});
 
-        //TODO: Add error handling
+        if (bookData) {
+            res.render('index', {title: "Books", bookData});
+        } else {
+            res.status(404).render('errors/page-not-found', {title: 'Page Not Found'});
+        }
     } else {
+        // bookSearchData contains only the books that match the search
         const bookSearchData = await Book.findAll({
             attributes: ['id', 'title', 'author', 'genre', 'year'],
             order: [['title', 'ASC']],
@@ -42,11 +47,12 @@ router.get('/', asyncHandler(async (req, res) => {
             }
         }).map(book => book.toJSON());
 
-        const searchResults = bookSearchData.length > 0;
-
-        res.render('books/search-results', {title: "Search Results", bookSearchData, searchResults});
-
-        //TODO: Add error handling
+        if (bookSearchData) {
+            const searchResults = bookSearchData.length > 0;
+            res.render('books/search-results', {title: "Search Results", bookSearchData, searchResults});
+        } else {
+            res.status(404).render('errors/page-not-found', {title: 'Page Not Found'});
+        }
     }
 }));
 
@@ -63,6 +69,7 @@ router.post('/new', asyncHandler(async (req, res) => {
         bookData = await Book.create(req.body);
         res.redirect('/');
     } catch (error) {
+        // handle error if value for title and author is not provided
         if (error.name === "SequelizeValidationError") {
             bookData = await Book.build(req.body);
             res.render('books/new-book', {bookData, formError: true, errors: error.errors, title: "New Book"})
@@ -100,6 +107,7 @@ router.post('/:id', asyncHandler(async (req, res) => {
         }
         res.redirect('/');
     } catch (error) {
+        // handle error if value for title and author is not provided
         if (error.name === "SequelizeValidationError") {
             bookToUpdate = await Book.build(req.body);
             bookToUpdate.id = id;
@@ -114,6 +122,7 @@ router.post('/:id', asyncHandler(async (req, res) => {
 router.get('/:id/delete', asyncHandler(async (req, res) => {
     const bookToDelete = await Book.findByPk(req.params.id);
 
+    // if bookToDelete exists render the delete-book page to confirm delete
     if (bookToDelete) {
         res.render('books/delete-book', {bookData: bookToDelete, title: "Delete Book"});
     } else {
