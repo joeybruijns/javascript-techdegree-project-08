@@ -25,7 +25,7 @@ router.get('/', asyncHandler(async (req, res) => {
             attributes: ['id', 'title', 'author', 'genre', 'year'],
             order: [['title', 'ASC']]
         }).map(book => book.toJSON());
-        res.render('index', {title: "Books", bookData})
+        res.render('index', {title: "Books", bookData});
 
         //TODO: Add error handling
     } else {
@@ -41,7 +41,10 @@ router.get('/', asyncHandler(async (req, res) => {
                 ]
             }
         }).map(book => book.toJSON());
-        res.render('books/search-results', {title: "Search Results", bookSearchData});
+
+        const searchResults = bookSearchData.length > 0;
+
+        res.render('books/search-results', {title: "Search Results", bookSearchData, searchResults});
 
         //TODO: Add error handling
     }
@@ -79,7 +82,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
     if (bookToUpdate) {
         res.render('books/update-book', {formError: false, title: bookToUpdate.title, bookToUpdate});
     } else {
-        res.status(404).render('errors/page-not-found', {title: 'Page Not Found'});
+        res.status(500).render('errors/error', {title: 'Error'});
     }
 }));
 
